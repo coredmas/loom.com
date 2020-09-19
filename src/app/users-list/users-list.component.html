@@ -14,17 +14,50 @@
       <mat-icon matSuffix (click)="search(query.value)">search</mat-icon>
     </mat-form-field>
   </div>
+  <div class="line">
+    <mat-form-field appearance="outline" class="item">
+      <mat-label>username</mat-label>
+      <input matInput type="text" placeholder="username" [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="item">
+      <mat-label>name</mat-label>
+      <input matInput type="text" placeholder="name" [(ngModel)]="name">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="item">
+      <mat-label>user_role</mat-label>
+      <mat-select [(ngModel)]="role">
+        <mat-option value="Admin">Admin</mat-option>
+        <mat-option value="User">User</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="item">
+      <button mat-raised-button color="primary" class="btn" (click)="AddUser()" >Добавить</button>
+    </div>
+  </div>
 
-
-  <mat-selection-list #users>
-    <mat-list-option *ngFor="let user of usersList; let i = index" [ngClass]="{'gray' : i%2}">
-      <div >
-        <span class="item">{{user.name}}</span>
-        <span class="item">{{user.username}}</span>
-        <span *ngIf="user.role === 'Admin'">{{user.role}}</span>
+  <div *ngIf="usersList.length > 0; else empty">
+    <mat-selection-list #users (selectionChange)="selectItem(users.selectedOptions.selected)">
+      <mat-list-option [value]="user" *ngFor="let user of usersList; let i = index" [ngClass]="{'gray' : i%2}">
+        <div>
+          <span class="item">{{user.name}}</span>
+          <span class="item">{{user.username}}</span>
+          <span *ngIf="user.role === 'Admin'">{{user.role}}</span>
+        </div>
+      </mat-list-option>
+    </mat-selection-list>
+    <div class="line">
+      <div>
+        Выбрано поль-й {{users.selectedOptions.selected.length}}
       </div>
-    </mat-list-option>
-  </mat-selection-list>
-  <p>
-    Options selected: {{users.selectedOptions.selected.length}}
-  </p>
+      <div>
+        <button mat-raised-button color="warn" class="btn" (click)="DeleteUser()" >Удалить</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #empty>
+    <div>
+      польз-й не найдено
+    </div>
+  </ng-template>
+
+
